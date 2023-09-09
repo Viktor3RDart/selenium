@@ -40,13 +40,16 @@ public class WaitingTest {
         input.click();
         input.sendKeys("Сайт компании Победа");
         input.sendKeys(Keys.ENTER);
+
         WebElement first_link_aero = driver.findElement(By.xpath("(//*[@id=\"rso\"]//a/h3)[1]"));
         first_link_aero.click();
+
         WebElement go_kalina = driver.findElement(By.xpath("//*[@id=\"__next\"]//button[10]/div[3]/div/div"));
         //Стандартное явное ожидание - wait.until(ExpectedConditions.visibilityOf(go_kalina));
         // Собственное явное ожидание:
         waitVisibleElement(go_kalina, 80000);
         Assert.assertEquals(go_kalina.getText(), "Полетели в Калининград!");
+
         WebElement button_language = driver.findElement(By.cssSelector("button.dp-1a5xm0y-root-root"));
         button_language.click();
         WebElement buttonChangeToEn = driver.findElement(By.cssSelector("div.dp-1s529v0-root-root > * button:nth-child(2)"));
