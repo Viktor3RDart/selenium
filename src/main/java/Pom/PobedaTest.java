@@ -1,4 +1,5 @@
 package Pom;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -42,17 +43,56 @@ public class PobedaTest {
     @Test
     public void PobedaTaskTest_1() {
         homePage = new PobedaPage(driver);
+
         wait.until(ExpectedConditions.visibilityOf(homePage.titleLogo));
+
         Assert.assertEquals(homePage.giveTitleText(), "Авиакомпания «Победа» - купить билеты на самолёт дешево" +
                 " онлайн, прямые и трансферные рейсы");
         Assert.assertTrue(homePage.titleLogo.isDisplayed());
+
         homePage.goToInfoButton();
         wait.until(ExpectedConditions.visibilityOf(homePage.readyToFlyButton));
         Assert.assertEquals(homePage.readyToFlyButton.getText(), "Подготовка к полёту");
         Assert.assertEquals(homePage.goodInfoButton.getText(), "Полезная информация");
         Assert.assertEquals(homePage.aboutCompanyButton.getText(), "О компании");
+    }
 
+    //1. Перейти на сайт pobeda.aero.
+    //2. Убедиться, что сайт открылся:
+    //а) текст заголовка страницы: Авиакомпания «Победа» - купить билеты на самолёт дешево онлайн, прямые
+    // и трансферные рейсы;
+    //б) на странице есть логотип Победы.
+    //3. Проскроллить страницу к блоку поиска билета и убедиться, что блок с поиском билета действительно
+    // отображается (есть поле Откуда, Куда, Дата вылета Туда, Дата вылета Обратно)
+    //4. Выбрать (или ввести) следующие критерии поиска:
+    //откуда – Москва (без выбора аэропорта) + нажать Enter
+    //куда – Санкт-Петербург + нажать Enter.
+    //6. Нажать кнопку «Поиск».
+    //7. Убедиться, что около поля «Туда» появилась красная обводка.
 
+    @Test
+    public void PobedaTaskTest_2() {
+        homePage = new PobedaPage(driver);
+
+        wait.until(ExpectedConditions.visibilityOf(homePage.titleLogo));
+        Assert.assertEquals(homePage.giveTitleText(), "Авиакомпания «Победа» - купить билеты на самолёт дешево" +
+                " онлайн, прямые и трансферные рейсы");
+        Assert.assertTrue(homePage.titleLogo.isDisplayed());
+
+        homePage.scrollTo(homePage.ticketsBox);
+        Assert.assertTrue(homePage.ticketFieldFrom.isDisplayed());
+        Assert.assertEquals(homePage.getNameTicketsField(homePage.ticketFieldFrom, "placeholder"), "Откуда");
+        Assert.assertTrue(homePage.ticketFieldTo.isDisplayed());
+        Assert.assertEquals(homePage.getNameTicketsField(homePage.ticketFieldTo, "placeholder"), "Куда");
+        Assert.assertTrue(homePage.ticketFieldDateIn.isDisplayed());
+        Assert.assertEquals(homePage.getNameTicketsField(homePage.ticketFieldDateIn, "placeholder"), "Туда");
+        Assert.assertTrue(homePage.ticketFieldDateBack.isDisplayed());
+        Assert.assertEquals(homePage.getNameTicketsField(homePage.ticketFieldDateBack, "placeholder"), "Обратно");
+
+        homePage.fillFiled(homePage.ticketFieldFrom, "Москва");
+        homePage.fillFiled(homePage.ticketFieldTo, "Санкт-Петербург");
+        homePage.findTickets();
+        Assert.assertEquals(homePage.giveColorOf(homePage.ticketFieldDateInFrame), "rgba(213, 0, 98, 1)");
     }
 
     @After

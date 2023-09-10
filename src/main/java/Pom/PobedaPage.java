@@ -26,19 +26,64 @@ public class PobedaPage {
     @FindBy(xpath = "//*[@id=\"__next\"]//div[2]//div[2]/div/div/div/div[3]/a")
     public WebElement aboutCompanyButton;
 
+    @FindBy(className = "dp-yvfgrg-root-card")
+    public WebElement ticketsBox;
+
+    @FindBy(css = "div:nth-child(1) > div > div > input")
+    public WebElement ticketFieldFrom;
+
+    @FindBy(css = "div:nth-child(4) > div > div > input")
+    public WebElement ticketFieldTo;
+
+    @FindBy(css = "div.dp-1pr8ed5-root > div > div:nth-child(1) > div > input")
+    public WebElement ticketFieldDateIn;
+
+    @FindBy(css = "div.dp-iqepeq-root > div > div.dp-192lqng-root > div.dp-1riiepc-root > div > div:nth-child(1) > div")
+    public WebElement ticketFieldDateInFrame;
+
+    @FindBy(css = "div.dp-1pr8ed5-root > div > div:nth-child(3) > div > input")
+    public WebElement ticketFieldDateBack;
+
+    @FindBy(className = "dp-82lagl-root-root")
+    public WebElement findTicketsButton;
+
+    @FindBy(className = "dp-vgaeps-root-suggestionName")
+    public WebElement firstElementInField;
+
     public PobedaPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
     }
 
-    public  String giveTitleText() {
+    public String giveTitleText() {
         return driver.getTitle();
     }
 
-    public void goToInfoButton(){
+    public void goToInfoButton() {
         Actions ac = new Actions(driver);
         ac.moveToElement(infoButton).perform();
     }
 
+    public void scrollTo(WebElement element) {
+        Actions ac = new Actions(driver);
+        ac.scrollToElement(element).perform();
+    }
 
+    public String getNameTicketsField(WebElement element, String nameAttribute) {
+        return element.getAttribute(nameAttribute);
+    }
+
+    public void fillFiled(WebElement element, String info) {
+        element.sendKeys(info);
+        // По условию тут должен быть ENTER дальше, но так не работает, надо выбрать из селекта.
+        firstElementInField.click();
+    }
+
+    public String giveColorOf(WebElement element) {
+        return element.getCssValue("border-bottom-color");
+    }
+
+    public void findTickets() {
+        findTicketsButton.click();
+    }
 }
