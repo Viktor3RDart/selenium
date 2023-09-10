@@ -50,7 +50,7 @@ public class PobedaTest {
                 " онлайн, прямые и трансферные рейсы");
         Assert.assertTrue(homePage.titleLogo.isDisplayed());
 
-        homePage.goToInfoButton();
+        homePage.goToSomeButton(homePage.infoButton);
         wait.until(ExpectedConditions.visibilityOf(homePage.readyToFlyButton));
         Assert.assertEquals(homePage.readyToFlyButton.getText(), "Подготовка к полёту");
         Assert.assertEquals(homePage.goodInfoButton.getText(), "Полезная информация");
@@ -95,7 +95,41 @@ public class PobedaTest {
         Assert.assertEquals(homePage.giveColorOf(homePage.ticketFieldDateInFrame), "rgba(213, 0, 98, 1)");
     }
 
-    @After
+
+    //1. Перейти на сайт pobeda.aero.
+    //2. Убедиться, что сайт открылся:
+    //а) текст заголовка страницы: Авиакомпания «Победа» - купить билеты на самолёт дешево онлайн, прямые и трансферные рейсы;
+    //б) на странице есть логотип Победы.
+    //3. Проскроллить страницу чуть ниже и кликнуть на пункт «Управление бронированием».
+    //4. Убедиться, что открылась необходимая страница:
+    //а) есть поле «Номер заказа или билета»;
+    //б) есть поле «Фамилия клиента»;
+    //в) есть кнопка «Поиск».
+    //5. Ввести в поля ввода данные:
+    //номер заказа – XXXXXX, фамилия – Qwerty
+    //и нажать кнопку «Поиск».
+    //6. Убедиться, что в новой вкладке на экране отображается текст ошибки «Заказ с указанными параметрами не найден»
+
+    @Test
+    public void PobedaTaskTest_3() throws InterruptedException {
+        homePage = new PobedaPage(driver);
+
+        wait.until(ExpectedConditions.visibilityOf(homePage.titleLogo));
+        Assert.assertEquals(homePage.giveTitleText(), "Авиакомпания «Победа» - купить билеты на самолёт дешево" +
+                " онлайн, прямые и трансферные рейсы");
+        Assert.assertTrue(homePage.titleLogo.isDisplayed());
+        // Так как на экране Управление бронированием закрыто рекламой, то нужно прокрутить ниже в конец страницы.
+        homePage.scrollTo(homePage.downToPage);
+        homePage.manageYourBooking.click();
+        Thread.sleep(2000);
+
+
+
+
+    }
+
+
+        @After
     public void tearDown() {
         driver.quit();
     }

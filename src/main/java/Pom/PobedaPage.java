@@ -50,6 +50,12 @@ public class PobedaPage {
     @FindBy(className = "dp-vgaeps-root-suggestionName")
     public WebElement firstElementInField;
 
+    @FindBy(linkText = "Управление бронированием")
+    public WebElement manageYourBooking;
+
+    @FindBy(css = "div.dp-y6ivb6-root > div.dp-shuw2i-root")
+    public WebElement downToPage;
+
     public PobedaPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
@@ -59,9 +65,9 @@ public class PobedaPage {
         return driver.getTitle();
     }
 
-    public void goToInfoButton() {
+    public void goToSomeButton(WebElement element) {
         Actions ac = new Actions(driver);
-        ac.moveToElement(infoButton).perform();
+        ac.moveToElement(element).perform();
     }
 
     public void scrollTo(WebElement element) {
