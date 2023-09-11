@@ -6,7 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 
-public class PobedaPage {
+public class PobedaHomePage {
 
     WebDriver driver;
 
@@ -53,10 +53,10 @@ public class PobedaPage {
     @FindBy(linkText = "Управление бронированием")
     public WebElement manageYourBooking;
 
-    @FindBy(css = "div.dp-y6ivb6-root > div.dp-shuw2i-root")
+    @FindBy(css = " div.dp-153bccs-root > div")
     public WebElement downToPage;
 
-    public PobedaPage(WebDriver driver) {
+    public PobedaHomePage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
     }

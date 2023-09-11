@@ -4,12 +4,12 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 
 import java.time.Duration;
 
@@ -17,14 +17,16 @@ public class PobedaTest {
 
     private WebDriver driver;
     private WebDriverWait wait;
-    PobedaPage homePage;
+    PobedaHomePage homePage;
+    PobedaBookingManagementPage PbmPage;
+    PobedaSearchOrderPage PsoPage;
 
 
     @Before
     public void setUp() {
         driver = new ChromeDriver();
         driver.manage().window().setSize(new Dimension(1500, 800));
-        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
         driver.get("https://pobeda.aero/");
@@ -42,7 +44,7 @@ public class PobedaTest {
 
     @Test
     public void PobedaTaskTest_1() {
-        homePage = new PobedaPage(driver);
+        homePage = new PobedaHomePage(driver);
 
         wait.until(ExpectedConditions.visibilityOf(homePage.titleLogo));
 
@@ -72,7 +74,7 @@ public class PobedaTest {
 
     @Test
     public void PobedaTaskTest_2() {
-        homePage = new PobedaPage(driver);
+        homePage = new PobedaHomePage(driver);
 
         wait.until(ExpectedConditions.visibilityOf(homePage.titleLogo));
         Assert.assertEquals(homePage.giveTitleText(), "Авиакомпания «Победа» - купить билеты на самолёт дешево" +
@@ -111,25 +113,34 @@ public class PobedaTest {
     //6. Убедиться, что в новой вкладке на экране отображается текст ошибки «Заказ с указанными параметрами не найден»
 
     @Test
-    public void PobedaTaskTest_3() throws InterruptedException {
-        homePage = new PobedaPage(driver);
+    public void PobedaTaskTest_3() {
+        homePage = new PobedaHomePage(driver);
+        PbmPage = new PobedaBookingManagementPage(driver);
+        PsoPage = new PobedaSearchOrderPage(driver);
 
         wait.until(ExpectedConditions.visibilityOf(homePage.titleLogo));
         Assert.assertEquals(homePage.giveTitleText(), "Авиакомпания «Победа» - купить билеты на самолёт дешево" +
                 " онлайн, прямые и трансферные рейсы");
         Assert.assertTrue(homePage.titleLogo.isDisplayed());
-        // Так как на экране Управление бронированием закрыто рекламой, то нужно прокрутить ниже в конец страницы.
+        // Так как на экране "Управление бронированием" закрыто рекламой, то нужно прокрутить ниже в конец страницы.
         homePage.scrollTo(homePage.downToPage);
         homePage.manageYourBooking.click();
-        Thread.sleep(2000);
 
+        wait.until(ExpectedConditions.elementToBeClickable(PbmPage.searchButton));
+        PbmPage.lastNameField.isDisplayed();
+        PbmPage.ticketNumberField.isDisplayed();
+        PbmPage.searchButton.isDisplayed();
+        PbmPage.fillFiled(PbmPage.lastNameField, "Qwerty");
+        PbmPage.fillFiled(PbmPage.ticketNumberField, "XXXXXX");
+        PbmPage.searchButton.click();
 
-
-
+        PsoPage.goToNextTab();
+        wait.until(ExpectedConditions.visibilityOf(PsoPage.errorMessage));
+        Assert.assertEquals(PsoPage.errorMessage.getText(), "Заказ с указанными параметрами не найден");
     }
 
 
-        @After
+    @After
     public void tearDown() {
         driver.quit();
     }
