@@ -4,35 +4,15 @@ import com.codeborne.selenide.Condition;
 import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
 
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import static com.codeborne.selenide.Selenide.open;;
+import static tests.PobedaTestData.*;
 
-import java.time.Duration;
-
-public class PobedaTest extends PobedaHomePage{
-
-    private WebDriver driver;
-    private WebDriverWait wait;
-    PobedaHomePage homePage;
-    PobedaBookingManagementPage PbmPage;
-    PobedaSearchOrderPage PsoPage;
+public class PobedaTest extends PobedaHomePage {
 
 
     @BeforeEach
     public void setUp() {
-//        driver = new ChromeDriver();
-//        driver.manage().window().setSize(new Dimension(1500, 800));
-//        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-//        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
-//        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
-//
-
-        open("https://pobeda.aero/");
+        openPage(HOME_PAGE);
     }
 
 
@@ -48,8 +28,7 @@ public class PobedaTest extends PobedaHomePage{
     @Test
     public void PobedaTaskTest_1() {
         getTitleLogo().should(Condition.visible);
-        checkField(giveTitleText(), "Авиакомпания «Победа» - купить билеты на самолёт дешево" +
-                " онлайн, прямые и трансферные рейсы");
+        checkField(giveTitleText(), TEST_TITLE_HOME_PAGE);
         checkVisibility(getTitleLogo());
         goToSomeButton(getInfoButton());
         getReadyToFlyButton().shouldBe(Condition.visible);
@@ -58,7 +37,7 @@ public class PobedaTest extends PobedaHomePage{
         checkField(getAboutCompanyButton().getText(), "О компании");
     }
 
-//    //1. Перейти на сайт pobeda.aero.
+    //    //1. Перейти на сайт pobeda.aero.
 //    //2. Убедиться, что сайт открылся:
 //    //а) текст заголовка страницы: Авиакомпания «Победа» - купить билеты на самолёт дешево онлайн, прямые
 //    // и трансферные рейсы;
@@ -71,72 +50,62 @@ public class PobedaTest extends PobedaHomePage{
 //    //6. Нажать кнопку «Поиск».
 //    //7. Убедиться, что около поля «Туда» появилась красная обводка.
 //
-//    @Test
-//    public void PobedaTaskTest_2() {
-//        homePage = new PobedaHomePage(driver);
-//
-//        wait.until(ExpectedConditions.visibilityOf(homePage.titleLogo));
-//        Assert.assertEquals(homePage.giveTitleText(), "Авиакомпания «Победа» - купить билеты на самолёт дешево" +
-//                " онлайн, прямые и трансферные рейсы");
-//        Assert.assertTrue(homePage.titleLogo.isDisplayed());
-//
-//        homePage.scrollTo(homePage.ticketsBox);
-//        Assert.assertTrue(homePage.ticketFieldFrom.isDisplayed());
-//        Assert.assertEquals(homePage.getNameTicketsField(homePage.ticketFieldFrom, "placeholder"), "Откуда");
-//        Assert.assertTrue(homePage.ticketFieldTo.isDisplayed());
-//        Assert.assertEquals(homePage.getNameTicketsField(homePage.ticketFieldTo, "placeholder"), "Куда");
-//        Assert.assertTrue(homePage.ticketFieldDateIn.isDisplayed());
-//        Assert.assertEquals(homePage.getNameTicketsField(homePage.ticketFieldDateIn, "placeholder"), "Туда");
-//        Assert.assertTrue(homePage.ticketFieldDateBack.isDisplayed());
-//        Assert.assertEquals(homePage.getNameTicketsField(homePage.ticketFieldDateBack, "placeholder"), "Обратно");
-//
-//        homePage.fillFiled(homePage.ticketFieldFrom, "Москва");
-//        homePage.fillFiled(homePage.ticketFieldTo, "Санкт-Петербург");
-//        homePage.findTickets();
-//        Assert.assertEquals(homePage.giveColorOf(homePage.ticketFieldDateInFrame), "rgba(213, 0, 98, 1)");
-//    }
-//
-//
-//    //1. Перейти на сайт pobeda.aero.
-//    //2. Убедиться, что сайт открылся:
-//    //а) текст заголовка страницы: Авиакомпания «Победа» - купить билеты на самолёт дешево онлайн, прямые и трансферные рейсы;
-//    //б) на странице есть логотип Победы.
-//    //3. Проскроллить страницу чуть ниже и кликнуть на пункт «Управление бронированием».
-//    //4. Убедиться, что открылась необходимая страница:
-//    //а) есть поле «Номер заказа или билета»;
-//    //б) есть поле «Фамилия клиента»;
-//    //в) есть кнопка «Поиск».
-//    //5. Ввести в поля ввода данные:
-//    //номер заказа – XXXXXX, фамилия – Qwerty
-//    //и нажать кнопку «Поиск».
-//    //6. Убедиться, что в новой вкладке на экране отображается текст ошибки «Заказ с указанными параметрами не найден»
-//
-//    @Test
-//    public void PobedaTaskTest_3() {
-//        homePage = new PobedaHomePage(driver);
-//        PbmPage = new PobedaBookingManagementPage(driver);
-//        PsoPage = new PobedaSearchOrderPage(driver);
-//
-//        wait.until(ExpectedConditions.visibilityOf(homePage.titleLogo));
-//        Assert.assertEquals(homePage.giveTitleText(), "Авиакомпания «Победа» - купить билеты на самолёт дешево" +
-//                " онлайн, прямые и трансферные рейсы");
-//        Assert.assertTrue(homePage.titleLogo.isDisplayed());
-//        // Так как на экране "Управление бронированием" закрыто рекламой, то нужно прокрутить ниже в конец страницы.
-//        homePage.scrollTo(homePage.downToPage);
-//        homePage.manageYourBooking.click();
-//
-//        wait.until(ExpectedConditions.elementToBeClickable(PbmPage.searchButton));
-//        PbmPage.lastNameField.isDisplayed();
-//        PbmPage.ticketNumberField.isDisplayed();
-//        PbmPage.searchButton.isDisplayed();
-//        PbmPage.fillFiled(PbmPage.lastNameField, "Qwerty");
-//        PbmPage.fillFiled(PbmPage.ticketNumberField, "XXXXXX");
-//        PbmPage.searchButton.click();
-//
-//        PsoPage.goToNextTab();
-//        wait.until(ExpectedConditions.visibilityOf(PsoPage.errorMessage));
-//        Assert.assertEquals(PsoPage.errorMessage.getText(), "Заказ с указанными параметрами не найден");
-//    }
-//
+    @Test
+    public void PobedaTaskTest_2() {
+        getTitleLogo().should(Condition.visible);
+        checkField(giveTitleText(), TEST_TITLE_HOME_PAGE);
+        checkVisibility(getTitleLogo());
+        scrollTo(getTicketsBox());
+        checkVisibility(getTicketFieldFrom());
+        checkField(getNameTicketsField(getTicketFieldFrom(), "placeholder"), "Откуда");
+        checkVisibility(getTicketFieldTo());
+        checkField(getNameTicketsField(getTicketFieldTo(), "placeholder"), "Куда");
+        checkVisibility(getTicketFieldDateIn());
+        checkField(getNameTicketsField(getTicketFieldDateIn(), "placeholder"), "Туда");
+        checkVisibility(getTicketFieldDateBack());
+        checkField(getNameTicketsField(getTicketFieldDateBack(), "placeholder"), "Обратно");
+        sendKeys(getTicketFieldFrom(), "Москва");
+        clickElement(getFirstElementInField());
+        sendKeys(getTicketFieldTo(), "Санкт-Петербург");
+        clickElement(getFirstElementInField());
+        clickElement(getFindTicketsButton());
+        checkField(giveColorOf(getTicketFieldDateInFrame()), "rgba(213, 0, 98, 1)");
+    }
 
+
+    //1. Перейти на сайт pobeda.aero.
+    //2. Убедиться, что сайт открылся:
+    //а) текст заголовка страницы: Авиакомпания «Победа» - купить билеты на самолёт дешево онлайн, прямые и трансферные рейсы;
+    //б) на странице есть логотип Победы.
+    //3. Проскроллить страницу чуть ниже и кликнуть на пункт «Управление бронированием».
+    //4. Убедиться, что открылась необходимая страница:
+    //а) есть поле «Номер заказа или билета»;
+    //б) есть поле «Фамилия клиента»;
+    //в) есть кнопка «Поиск».
+    //5. Ввести в поля ввода данные:
+    //номер заказа – XXXXXX, фамилия – Qwerty
+    //и нажать кнопку «Поиск».
+    //6. Убедиться, что в новой вкладке на экране отображается текст ошибки «Заказ с указанными параметрами не найден»
+
+    @Test
+    public void PobedaTaskTest_3() {
+        PobedaBookingManagementPage PbmPage = new PobedaBookingManagementPage();
+        PobedaSearchOrderPage PsoPage = new PobedaSearchOrderPage();
+        getTitleLogo().should(Condition.visible);
+        checkField(giveTitleText(), TEST_TITLE_HOME_PAGE);
+        checkVisibility(getTitleLogo());
+        // Так как на экране "Управление бронированием" закрыто рекламой, то нужно прокрутить ниже в конец страницы.
+        scrollTo(getDownToPage());
+        clickElement(getManageYourBooking());
+        PbmPage.getSearchButton().shouldBe(Condition.interactable);
+        checkVisibility(PbmPage.getLastNameField());
+        checkVisibility(PbmPage.getTicketNumberField());
+        checkVisibility(PbmPage.getSearchButton());
+        sendKeys(PbmPage.getLastNameField(), "Qwerty");
+        sendKeys(PbmPage.getTicketNumberField(), "XXXXXX");
+        clickElement(PbmPage.getSearchButton());
+        PsoPage.goToNextTab(1);
+        PsoPage.getErrorMessage().shouldBe(Condition.visible);
+        checkField(giveText(PsoPage.getErrorMessage()), "Заказ с указанными параметрами не найден");
+    }
 }

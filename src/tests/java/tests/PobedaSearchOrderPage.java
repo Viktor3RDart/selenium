@@ -1,27 +1,24 @@
 package tests;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
+
 import static com.codeborne.selenide.Selenide.*;
 
-import java.util.ArrayList;
-
-
 public class PobedaSearchOrderPage {
-    WebDriver driver;
 
-    private WebElement errorMessage = $( "div.message_error");
+    private SelenideElement errorMessage = $("div.message_error");
 
-    public void goToNextTab() {
-        ArrayList<String> newTab = new ArrayList<>(driver.getWindowHandles());
-        driver.switchTo().window(newTab.get(1));
+    @Step("Переключится на вкладку № {numberWindow}")
+    public void goToNextTab(int numberWindow) {
+        switchTo().window(numberWindow);
     }
 
-    public WebElement getErrorMessage() {
+    public SelenideElement getErrorMessage() {
         return errorMessage;
     }
 
-    public void setErrorMessage(WebElement errorMessage) {
+    public void setErrorMessage(SelenideElement errorMessage) {
         this.errorMessage = errorMessage;
     }
 }

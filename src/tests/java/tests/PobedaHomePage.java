@@ -35,11 +35,18 @@ public class PobedaHomePage {
 
     private SelenideElement findTicketsButton = $(byClassName("dp-82lagl-root-root"));
 
-    private SelenideElement firstElementInField = $(byClassName("dp-vgaeps-root-suggestionName"));
+    private SelenideElement firstElementInField = $(byClassName("dp-h9hje4-root-suggestionName"));
 
     private SelenideElement manageYourBooking = $(byLinkText("Управление бронированием"));
 
     private SelenideElement downToPage = $(" div.dp-153bccs-root > div");
+
+
+    @Step("Открыть браузер по url - {url}")
+    public void openPage(String url) {
+        open(url);
+    }
+
 
     @Step("Получение титула страницы")
     public String giveTitleText() {
@@ -69,8 +76,6 @@ public class PobedaHomePage {
     @Step("Ввод в поле значения {writeInElement}")
     public void sendKeys(SelenideElement element, String info) {
         element.sendKeys(info);
-        // По условию тут должен быть ENTER дальше, но так не работает, надо выбрать из селекта.
-        clickElement(firstElementInField);
     }
 
     @Step("Цвет элемента - {element}")
@@ -80,13 +85,13 @@ public class PobedaHomePage {
 
 
     @Step("Проверка соответствия введенного элемента {expected} и полученного {actual}")
-    public void checkField(String expected, String actual) {
+    public void checkField(String actual, String expected) {
         Assert.assertEquals(expected, actual);
     }
 
     @Step("Проверка отображение элемента - {element}")
-    public boolean checkVisibility(SelenideElement element) {
-        return element.isDisplayed();
+    public void checkVisibility(SelenideElement element) {
+        Assert.assertTrue(element.isDisplayed());
     }
 
     @Step("Получить текст элемента - {element}")
